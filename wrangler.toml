@@ -1,0 +1,6 @@
+name = "mute-firefly-5b34"
+main = "index.js"
+compatibility_date = "2024-03-19"
+
+[vars]
+# මෙතන ඔයාට ඕන නම් variables දාන්න පුළුවන්
