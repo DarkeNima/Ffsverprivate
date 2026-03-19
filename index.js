@@ -1,20 +1,10 @@
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    const userAgent = request.headers.get("User-Agent") || "";
 
-    // Game eka request karana path ekata (/) hari (/live/ver.php) ekata hari ena eva
-    if (url.pathname === "/" || url.pathname.includes("/live/")) {
-      
-      // Browser ekakin (Chrome/Safari) open kaloth "403 Forbidden" pennanna
-      const userAgent = request.headers.get("User-Agent") || "";
-      if (userAgent.includes("Mozilla") && !userAgent.includes("Dalvik")) {
-        return new Response("<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx/1.20.1</center></body></html>", {
-          status: 403,
-          headers: { "content-type": "text/html" },
-        });
-      }
-
-      // Game eken ena request valata dena Response eka
+    // 1. ගේම් එකෙන් (Android/Dalvik) එන Request එකක් නම් කෙලින්ම JSON එක දෙන්න
+    if (userAgent.includes("Dalvik") || userAgent.includes("Android")) {
       const responseData = {
         "is_server_open": true,
         "code": 2,
@@ -34,13 +24,14 @@ export default {
       };
 
       return new Response(JSON.stringify(responseData), {
-        headers: { 
-          "content-type": "application/json;charset=UTF-8",
-          "Access-Control-Allow-Origin": "*" 
-        },
+        headers: { "content-type": "application/json;charset=UTF-8" },
       });
     }
 
-    return new Response("Not Found", { status: 404 });
+    // 2. Browser එකකින් ආවොත් (Chrome/Safari) අර පරණ විදිහටම 403 පෙන්වන්න
+    return new Response("<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx/1.20.1</center></body></html>", {
+      status: 403,
+      headers: { "content-type": "text/html" },
+    });
   },
 };
