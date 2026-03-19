@@ -19,7 +19,7 @@ export default {
       "is_server_open": true,
       "code": 2,
       "country_code": "IN",
-      "server_url": "https://mute-firefly-5b34.nimsarahhnaviduhj.workers.dev/",
+      "server_url": "https://ffsverprivate.vercel.app/",
       "latest_release_version": "",  // මේවා හිස්ව තියන්න
       "remote_version": "",          // මේවා හිස්ව තියන්න
       "cdn_url": "",
