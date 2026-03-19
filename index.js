@@ -7,7 +7,10 @@ export default {
     if (userAgent.includes("Mozilla") && !userAgent.includes("Dalvik") && !userAgent.includes("Garena")) {
       return new Response("<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx/1.20.1</center></body></html>", {
         status: 403,
-        headers: { "content-type": "text/html" },
+        headers: { 
+          "Content-Type": "text/html",
+          "Server": "nginx/1.20.1" // මෙතනත් අපි Nginx විදිහටම පෙන්වනවා
+        },
       });
     }
 
@@ -30,10 +33,17 @@ export default {
       "client_ip": "127.0.0.1"
     };
 
+    // Nginx Headers එක්කම ගේම් එකට Response එක යැවීම
     return new Response(JSON.stringify(responseData), {
+      status: 200,
       headers: { 
         "Content-Type": "application/json; charset=utf-8",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Server": "nginx/1.20.1",          // ගේම් එකට පෙන්වන්නේ Nginx සර්වර් එකක් කියලා
+        "X-Powered-By": "PHP/7.4.33",      // තවත් රියල් කරලා පෙන්වන්න
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0", // පරණ දත්ත ගන්න එක නවත්තන්න
+        "Pragma": "no-cache",
+        "Connection": "keep-alive"
       },
     });
   },
