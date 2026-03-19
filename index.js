@@ -2,7 +2,8 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    if (url.pathname.endsWith(".php")) {
+    // /live/ කියන path එකට එන ඕනෑම request එකකට පිළිතුරු දීම
+    if (url.pathname.includes("/live/")) {
       const responseData = {
         "is_server_open": true,
         "code": 2,
@@ -29,8 +30,10 @@ export default {
       });
     }
 
-    return new Response(JSON.stringify({ "status": "online" }), {
+    // Default response (අනිකුත් requests සඳහා)
+    return new Response(JSON.stringify({ "status": "online", "owner": "Navidu" }), {
       headers: { "content-type": "application/json" },
     });
   },
 };
+
